@@ -17,7 +17,7 @@ services:
       retries: 10
 
   # ── LiveKit Server ───────────────────────────────────────────────────────────
-  livekit:
+livekit:
     image: livekit/livekit-server:latest
     container_name: livekit
     ports:
@@ -32,10 +32,11 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7880"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:7880 || exit 1"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 10
+      start_period: 10s
 
   # ── Token Server ─────────────────────────────────────────────────────────────
   token-server:
